@@ -1,0 +1,15 @@
+{
+    "actorSpecification": 1,
+    "name": "duikersgids-dive-logs-scraper",
+    "title": "Duikersgids.nl Dive Logs Scraper",
+    "description": "Scrapes dive logs (logberichten) and dive spot metadata from www.duikersgids.nl using Crawlee and CheerioCrawler.",
+    "version": "1.0",
+    "meta": {
+        "templateId": "ts-crawlee-cheerio"
+    },
+    "input": "./input_schema.json",
+    "dockerfile": "../Dockerfile",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    }
+}

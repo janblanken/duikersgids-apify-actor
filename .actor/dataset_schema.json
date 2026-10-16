@@ -1,0 +1,66 @@
+{
+    "actorSpecification": 1,
+    "fields": {
+        "type": "object",
+        "properties": {
+            "logId": { "type": "string", "title": "Log ID" },
+            "hashLogId": { "type": "string", "title": "Hash Log ID" },
+            "date": { "type": "string", "title": "Dive Date (ISO)" },
+            "dateRaw": { "type": "string", "title": "Dive Date (Raw)" },
+            "spotName": { "type": "string", "title": "Dive Spot" },
+            "spotSlug": { "type": "string", "title": "Dive Spot Slug" },
+            "stekId": { "type": "string", "title": "Stek ID" },
+            "latitude": { "type": "number", "title": "Latitude" },
+            "longitude": { "type": "number", "title": "Longitude" },
+            "countryRegion": { "type": "string", "title": "Country / Region" },
+            "diverName": { "type": "string", "title": "Diver Name" },
+            "diverProfileUrl": { "type": "string", "title": "Diver Profile URL" },
+            "ratingStars": { "type": "integer", "title": "Rating (1-5)" },
+            "visibilityMeters": { "type": "number", "title": "Visibility (m)" },
+            "waterTemperatureCelsius": { "type": "number", "title": "Water Temp (°C)" },
+            "temperatureDepthMeters": { "type": "number", "title": "Temp Depth (m)" },
+            "remarks": { "type": "string", "title": "Dive Log Remarks" },
+            "photos": { "type": "array", "title": "Photo URLs" },
+            "logUrl": { "type": "string", "title": "Log URL" },
+            "spotUrl": { "type": "string", "title": "Spot URL" }
+        }
+    },
+    "views": {
+        "overview": {
+            "title": "Dive Logs Overview",
+            "transformation": {
+                "fields": [
+                    "logId",
+                    "date",
+                    "spotName",
+                    "diverName",
+                    "visibilityMeters",
+                    "waterTemperatureCelsius",
+                    "temperatureDepthMeters",
+                    "ratingStars",
+                    "remarks",
+                    "latitude",
+                    "longitude",
+                    "logUrl"
+                ]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "logId": { "label": "Log ID", "format": "text" },
+                    "date": { "label": "Date", "format": "text" },
+                    "spotName": { "label": "Dive Spot", "format": "text" },
+                    "diverName": { "label": "Diver", "format": "text" },
+                    "visibilityMeters": { "label": "Visibility (m)", "format": "number" },
+                    "waterTemperatureCelsius": { "label": "Temp (°C)", "format": "number" },
+                    "temperatureDepthMeters": { "label": "Depth (m)", "format": "number" },
+                    "ratingStars": { "label": "Rating", "format": "number" },
+                    "remarks": { "label": "Remarks", "format": "text" },
+                    "latitude": { "label": "Lat", "format": "number" },
+                    "longitude": { "label": "Lng", "format": "number" },
+                    "logUrl": { "label": "URL", "format": "link" }
+                }
+            }
+        }
+    }
+}

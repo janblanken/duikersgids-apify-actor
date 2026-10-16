@@ -1,0 +1,73 @@
+{
+    "title": "Duikersgids.nl Dive Logs Scraper Input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "maxItems": {
+            "title": "Max Dive Logs",
+            "type": "integer",
+            "description": "Maximum number of dive logs to scrape. Set to 0 for unlimited within the selected date range.",
+            "default": 200,
+            "minimum": 0,
+            "prefill": 200
+        },
+        "searchKeyword": {
+            "title": "Search Keyword (Optional)",
+            "type": "string",
+            "description": "Optional keyword to filter dive logs (min 3 characters, e.g. 'zeepaardje', 'meerval', 'snoek'). Leave empty to scrape ALL dive logs chronologically.",
+            "default": "",
+            "editor": "textfield"
+        },
+        "dateFrom": {
+            "title": "Date From (DD-MM-YYYY)",
+            "type": "string",
+            "description": "Earliest dive date to scrape in DD-MM-YYYY format (e.g. '01-01-2026'). Defaults to 1 year ago if left empty.",
+            "default": "",
+            "editor": "textfield"
+        },
+        "dateTo": {
+            "title": "Date To (DD-MM-YYYY)",
+            "type": "string",
+            "description": "Latest dive date to scrape in DD-MM-YYYY format (e.g. '16-10-2026'). Defaults to today if left empty.",
+            "default": "",
+            "editor": "textfield"
+        },
+        "windowDays": {
+            "title": "Date Pagination Window (Days)",
+            "type": "integer",
+            "description": "Number of days per search window when stepping backwards through /logberichten (each window returns up to 100 logs; automatically splits if a window hits 100 logs).",
+            "default": 7,
+            "minimum": 1,
+            "maximum": 365
+        },
+        "spotUrls": {
+            "title": "Specific Dive Spot URLs (Optional)",
+            "type": "array",
+            "description": "Optional list of Duikersgids dive spot URLs (e.g. https://www.duikersgids.nl/eiland-4) to scrape recent logs directly from those spots.",
+            "editor": "requestListSources",
+            "default": []
+        },
+        "scrapeLogDetails": {
+            "title": "Visit Individual Log Detail Pages",
+            "type": "boolean",
+            "description": "Enable to visit each individual /logbericht/... page to also extract attached dive photos, diver profile URL/avatar, and region/province text.",
+            "default": false
+        },
+        "enrichWithSpotCoordinates": {
+            "title": "Enrich with Dive Spot GPS Coordinates",
+            "type": "boolean",
+            "description": "Fetches the Duikersgids dive spots directory once at startup (1,868 spots) to attach stekId, latitude, longitude, and spotUrl to every log.",
+            "default": true
+        },
+        "proxyConfiguration": {
+            "title": "Proxy Configuration",
+            "type": "object",
+            "description": "Select proxies to be used by your crawler.",
+            "editor": "proxy",
+            "default": {
+                "useApifyProxy": false
+            }
+        }
+    },
+    "required": []
+}
