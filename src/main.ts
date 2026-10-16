@@ -318,7 +318,7 @@ const crawler = new CheerioCrawler({
                             label: 'LOG_SEARCH',
                             winStartIso: winStart.toISOString(),
                             winEndIso: midDate.toISOString(),
-                            isSplitWindow: false,
+                            isSplitWindow: Boolean(request.userData.isSplitWindow),
                             nextCursorIso: request.userData.nextCursorIso,
                         },
                     },
