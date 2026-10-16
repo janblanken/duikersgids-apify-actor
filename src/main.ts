@@ -616,23 +616,44 @@ for (const entry of spotUrls) {
     }
 }
 
-// 2. If no spotUrls provided (or in addition), start date-window pagination on /logberichten
+// 2. If no spotUrls provided, start date-window pagination on /logberichten
 if (initialRequests.length === 0) {
-    const firstWinStartCandidate = addDays(parsedEndDate, -(windowDays - 1));
-    const firstWinStart = firstWinStartCandidate < parsedStartDate ? parsedStartDate : firstWinStartCandidate;
-    const nextCursor = addDays(firstWinStart, -1);
+    if (maxItems === 0) {
+        // Pre-generate all date windows from parsedEndDate down to parsedStartDate for fast concurrent scraping
+        let cursorEnd = new Date(parsedEndDate.getTime());
+        while (cursorEnd >= parsedStartDate) {
+            const candidateStart = addDays(cursorEnd, -(windowDays - 1));
+            const winStart = candidateStart < parsedStartDate ? parsedStartDate : candidateStart;
+            initialRequests.push({
+                url: buildLogSearchUrl(searchKeyword, winStart, cursorEnd),
+                uniqueKey: `SEARCH_${winStart.toISOString()}_${cursorEnd.toISOString()}`,
+                userData: {
+                    label: 'LOG_SEARCH',
+                    winStartIso: winStart.toISOString(),
+                    winEndIso: cursorEnd.toISOString(),
+                    isSplitWindow: false,
+                    nextCursorIso: undefined,
+                },
+            });
+            cursorEnd = addDays(winStart, -1);
+        }
+    } else {
+        const firstWinStartCandidate = addDays(parsedEndDate, -(windowDays - 1));
+        const firstWinStart = firstWinStartCandidate < parsedStartDate ? parsedStartDate : firstWinStartCandidate;
+        const nextCursor = addDays(firstWinStart, -1);
 
-    initialRequests.push({
-        url: buildLogSearchUrl(searchKeyword, firstWinStart, parsedEndDate),
-        uniqueKey: `SEARCH_${firstWinStart.toISOString()}_${parsedEndDate.toISOString()}`,
-        userData: {
-            label: 'LOG_SEARCH',
-            winStartIso: firstWinStart.toISOString(),
-            winEndIso: parsedEndDate.toISOString(),
-            isSplitWindow: false,
-            nextCursorIso: nextCursor >= parsedStartDate ? nextCursor.toISOString() : undefined,
-        },
-    });
+        initialRequests.push({
+            url: buildLogSearchUrl(searchKeyword, firstWinStart, parsedEndDate),
+            uniqueKey: `SEARCH_${firstWinStart.toISOString()}_${parsedEndDate.toISOString()}`,
+            userData: {
+                label: 'LOG_SEARCH',
+                winStartIso: firstWinStart.toISOString(),
+                winEndIso: parsedEndDate.toISOString(),
+                isSplitWindow: false,
+                nextCursorIso: nextCursor >= parsedStartDate ? nextCursor.toISOString() : undefined,
+            },
+        });
+    }
 }
 
 log.info(`Starting Duikersgids Dive Logs Crawler with ${initialRequests.length} initial request(s)...`);
